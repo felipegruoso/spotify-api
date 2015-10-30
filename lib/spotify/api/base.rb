@@ -5,7 +5,12 @@ module Spotify
 
     class Base
 
-      attr_accessor :response, :retries, :timeout, :url, :params, :request
+      attr_reader :response, :retries, :timeout, :url, :params, :request
+
+      #
+      # The API base URL.
+      #
+      BASE_URL = "https://api.spotify.com/v1/"
 
       #
       # The max retries limit.
@@ -16,10 +21,11 @@ module Spotify
       # Initializes the optional arguments.
       #
       # @param [Hash] the optional arguments.
-      # @option [Fixnum] timeout the max time a request can take.
-      # @option [Fixnum] retries the number of retries if necessary.
+      # @option [Fixnum] :timeout the max time a request can take.
+      # @option [Fixnum] :retries the number of retries if necessary.
       #
       def initialize(args = {})
+        @args    = args.except(:timeout, :retries)
         @timeout = args[:timeout].to_i
         @retries = args[:retries].to_i
       end

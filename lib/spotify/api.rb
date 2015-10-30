@@ -1,7 +1,8 @@
 require "spotify/api/version"
+require "spotify/api/base"
+require "spotify/api/errors"
 
 module Spotify
-  module Api
-    # Your code goes here...
+  module API
   end
 end

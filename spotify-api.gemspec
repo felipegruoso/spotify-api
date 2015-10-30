@@ -5,7 +5,7 @@ require 'spotify/api/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "spotify-api"
-  spec.version       = Spotify::Api::VERSION
+  spec.version       = Spotify::API::VERSION
   spec.authors       = ["Felipe Gadelha Ruoso"]
   spec.email         = ["felipe.gruoso@gmail.com"]
 

@@ -78,6 +78,23 @@ module Spotify
       end
 
       #
+      # Get an artist's albums.
+      #
+      # @param [Hash] args the search arguments.
+      # @option [Fixnum] :timeout the max time a request can take.
+      # @option [Fixnum] :retries the number of retries if necessary.
+      #
+      # @return [Array<Spotify::Models::Paging>] an array containing
+      #   the extracted artist's albums.
+      #
+      def self.albums(args = {})
+        args           = args.slice(:id, :album_type, :market, :limit, :offset)
+        service_params = args.slice(:timeout, :retries)
+
+        self.new(service_params).albums(args)
+      end
+
+      #
       # Gets an artist.
       #
       # @param [Hash] args the search arguments.
@@ -86,7 +103,9 @@ module Spotify
       # @return [Spotify::Models::Artist] the extracted artist.
       #
       def search_by_id(args = {})
-        get(ARTISTS_URL + '/' + args[:id].to_s)
+        url = ARTISTS_URL + '/' + args[:id].to_s
+
+        get(url)
 
         response = body
 
@@ -131,7 +150,10 @@ module Spotify
       #   the extracted artist's top tracks.
       #
       def top_tracks(args = {})
-        get(ARTISTS_URL + '/' + args[:id].to_s + '/top-tracks', args.slice(:country))
+        url    = ARTISTS_URL + '/' + args[:id].to_s + '/top-tracks'
+        params = args.slice(:country)
+
+        get(url, params)
 
         response = body
 
@@ -155,7 +177,9 @@ module Spotify
       #   the extracted artist's related artists.
       #
       def related_artists(args = {})
-        get(ARTISTS_URL + '/' + args[:id].to_s + '/related-artists')
+        url = ARTISTS_URL + '/' + args[:id].to_s + '/related-artists'
+
+        get(url)
 
         response = body
 
@@ -163,6 +187,32 @@ module Spotify
           response = response["artists"].map do |artist|
             Spotify::Models::Artist.new(artist)
           end
+        end
+
+        response
+      end
+
+      #
+      # Get an artist's albums.
+      #
+      # @param [Hash] args the search arguments.
+      # @option [Fixnum] :timeout the max time a request can take.
+      # @option [Fixnum] :retries the number of retries if necessary.
+      #
+      # @return [Array<Spotify::Models::Paging>] an array containing
+      #   the extracted artist's related artists.
+      #
+      def albums(args = {})
+        url    = ARTISTS_URL + '/' + args[:id].to_s + '/albums'
+        params = args.slice(:album_type, :market, :limit, :offset)
+
+        get(url, params)
+
+        response = body
+
+        unless response["error"]
+          klass    = Spotify::Models::Artist
+          response = Spotify::Models::Paging.new(response, klass)
         end
 
         response

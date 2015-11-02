@@ -12,6 +12,7 @@ module Spotify
       def initialize(args = {})
         args = args.with_indifferent_access
 
+        @artists           = args[:artists].map { |artist| Artist.new(artist) }
         @available_markets = args[:available_markets]
         @disc_number       = args[:disc_number]
         @duration_ms       = args[:duration_ms]
@@ -29,7 +30,6 @@ module Spotify
 
         # HACK: Using JSON while the other classes aren't available.
         @album             = args[:album]
-        @artists           = args[:artists]
         @external_ids      = args[:external_ids]
         @external_urls     = args[:external_urls]
       end

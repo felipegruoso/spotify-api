@@ -74,7 +74,7 @@ module Spotify
       # @return [Array<Spotify::Models::Track>] an array containing
       #   the extracted tracks.
       #
-      def search_by_ids(args)
+      def search_by_ids(args = {})
         get(TRACKS_URL, args)
 
         response = body

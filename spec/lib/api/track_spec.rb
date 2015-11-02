@@ -12,16 +12,22 @@ describe Spotify::API::Track do
       track = described_class.search_by_id(id: id)
 
       expect(track).to be_an_instance_of(Spotify::Models::Track)
+      expect(track.artists).to be_an_instance_of(Array)
+
+      track.artists.each do |artist|
+        expect(artist).to be_an_instance_of(Spotify::Models::Artist)
+      end
     end
 
     example "Uses market parameter" do
       track = described_class.search_by_id(id: id, market: market)
 
       expect(track).to be_an_instance_of(Spotify::Models::Track)
+      expect(track.linked_from).to be_present
     end
 
     example "Missing mandatory parameter (:id)" do
-      track = described_class.search_by_id(market: market)
+      track = described_class.search_by_id
 
       expect(track).to be_an_instance_of(Hash)
       expect(track['error']).to be_present

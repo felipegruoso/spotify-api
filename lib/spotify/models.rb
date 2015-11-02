@@ -1,5 +1,6 @@
-require "spotify/models/track"
 require "spotify/models/artist"
+require "spotify/models/paging"
+require "spotify/models/track"
 
 module Spotify
   module Models

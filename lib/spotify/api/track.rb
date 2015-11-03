@@ -18,6 +18,10 @@ module Spotify
       # @return [Spotify::Models::Track] the extracted track.
       #
       def self.search_by_id(args = {})
+        if args[:market].pesent?
+          args[:market] = [args[:market]].flatten.join(',')
+        end
+
         service_params = args.slice(:timeout, :retries)
         args           = args.slice(:id, :market)
 
@@ -35,8 +39,14 @@ module Spotify
       #   the extracted tracks.
       #
       def self.search_by_ids(args = {})
-        args[:ids]     ||= []
-        args[:ids]     = args[:ids].join(',')
+        if args[:ids].present?
+          args[:ids] = [args[:ids]].flatten.join(',')
+        end
+
+        if args[:market].pesent?
+          args[:market] = [args[:market]].flatten.join(',')
+        end
+
         service_params = args.slice(:timeout, :retries)
         args           = args.slice(:ids, :market)
 

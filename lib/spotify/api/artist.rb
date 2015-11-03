@@ -35,8 +35,10 @@ module Spotify
       #   the extracted artists.
       #
       def self.search_by_ids(args = {})
-        args[:ids]     ||= []
-        args[:ids]     = args[:ids].join(',')
+        if args[:ids].present?
+          args[:ids] = [args[:ids]].flatten.join(',')
+        end
+
         service_params = args.slice(:timeout, :retries)
         args           = args.slice(:ids)
 
@@ -88,6 +90,14 @@ module Spotify
       #   the extracted artist's albums.
       #
       def self.albums(args = {})
+        if args[:album_type].present?
+          args[:album_type] = [args[:album_type]].flatten.join(',')
+        end
+
+        if args[:market].present?
+          args[:market] = [args[:market]].flatten.join(',')
+        end
+
         args           = args.slice(:id, :album_type, :market, :limit, :offset)
         service_params = args.slice(:timeout, :retries)
 

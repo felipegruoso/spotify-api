@@ -7,6 +7,8 @@ module Spotify
       attr_reader :external_urls, :href, :id, :type, :uri
 
       def initialize(args = {})
+        args = args.with_indifferent_access
+
         @href          = args[:href]
         @id            = args[:id]
         @type          = args[:type]

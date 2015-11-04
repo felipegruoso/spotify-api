@@ -1,5 +1,6 @@
 require "spotify/models/album"
 require "spotify/models/artist"
+require "spotify/models/cursor"
 require "spotify/models/followers"
 require "spotify/models/image"
 require "spotify/models/paging"

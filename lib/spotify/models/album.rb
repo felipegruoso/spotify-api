@@ -11,12 +11,18 @@ module Spotify
       def initialize(args = {})
         args = args.with_indifferent_access
 
-        artists = args[:artists].map { |artist| Artist.new(artist) }
+        if args[:artists]
+          artists = args[:artists].map { |artist| Artist.new(artist) }
+        else
+          artists = nil
+        end
 
-        klass  = Spotify::Models::Track
-        tracks = Spotify::Models::Paging.new(args[:tracks], klass)
-        # tracks = args[:tracks].map do |track|
-        # end
+        if args[:tracks]
+          klass  = Spotify::Models::Track
+          tracks = Spotify::Models::Paging.new(args[:tracks], klass)
+        else
+          tracks = nil
+        end
 
         @album_type             = args[:album_type]
         @artists                = artists

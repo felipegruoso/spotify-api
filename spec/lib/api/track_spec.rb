@@ -11,7 +11,8 @@ describe Spotify::API::Track do
     example "Performs a simple request" do
       track = described_class.search_by_id(id: id)
 
-      expect(track).to be_an_instance_of(Spotify::Models::Track)
+      expect(track).to         be_an_instance_of(Spotify::Models::Track)
+      expect(track.album).to   be_an_instance_of(Spotify::Models::Album)
       expect(track.artists).to be_an_instance_of(Array)
 
       track.artists.each do |artist|

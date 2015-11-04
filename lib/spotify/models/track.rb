@@ -13,6 +13,7 @@ module Spotify
         args = args.with_indifferent_access
 
         @artists           = args[:artists].map { |artist| Artist.new(artist) }
+        @album             = Spotify::Models::Album.new(args[:album] || {})
         @available_markets = args[:available_markets]
         @disc_number       = args[:disc_number]
         @duration_ms       = args[:duration_ms]
@@ -29,7 +30,6 @@ module Spotify
         @uri               = args[:uri]
 
         # HACK: Using JSON while the other classes aren't available.
-        @album             = args[:album]
         @external_ids      = args[:external_ids]
         @external_urls     = args[:external_urls]
       end

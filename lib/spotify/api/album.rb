@@ -55,7 +55,7 @@ module Spotify
       #
       def self.tracks(args = {})
         service_params = args.slice(:timeout, :retries)
-        args           = args.slice(:id)
+        args           = args.slice(:id, :limit, :offset, :market)
 
         self.new(service_params).tracks(args)
       end
@@ -100,6 +100,22 @@ module Spotify
           response = response["albums"].map do |album|
             Spotify::Models::Album.new(album)
           end
+        end
+
+        response
+      end
+
+      def tracks(args = {})
+        url    = ALBUMS_URL + '/' + args[:id] + '/tracks'
+        params = args.slice(:limit, :offset, :market)
+
+        get(url, params)
+
+        response = body
+
+        unless response["error"]
+          klass    = Spotify::Models::Track
+          response = Spotify::Models::Paging.new(response, klass)
         end
 
         response

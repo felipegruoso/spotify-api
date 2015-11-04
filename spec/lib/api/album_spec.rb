@@ -2,9 +2,21 @@ require 'spec_helper'
 
 describe Spotify::API::Album do
 
-  let(:id)     { '0sNOF9WDwhWunNAHPD3Baj' }
-  let(:ids)    { ["6JWc4iAiJ9FjyK0B59ABb4", "6UXCm6bOO4gFlDQZV5yL37"] }
-  let(:market) { 'US' }
+  let(:id)           { '0sNOF9WDwhWunNAHPD3Baj' }
+  let(:ids)          { ["6JWc4iAiJ9FjyK0B59ABb4", "6UXCm6bOO4gFlDQZV5yL37"] }
+  let(:market)       { 'US' }
+  let(:limit_params) {
+    {
+      id:    id,
+      limit: 3
+    }
+  }
+  let(:offset_params) {
+    {
+      id:     id,
+      offset: 1
+    }
+  }
 
   context "#search_by_id" do
 
@@ -66,6 +78,43 @@ describe Spotify::API::Album do
 
       expect(albums).to be_an_instance_of(Hash)
       expect(albums['error']).to be_present
+    end
+
+  end
+
+  context '#tracks' do
+
+    example "Performs a simple request" do
+      tracks = described_class.tracks(id: id)
+
+      expect(tracks).to be_an_instance_of(Spotify::Models::Paging)
+
+      tracks.items.each do |track|
+        expect(track).to be_an_instance_of(Spotify::Models::Track)
+      end
+    end
+
+    example "Uses market parameter" do
+      tracks = described_class.tracks(id: id, market: market)
+
+      expect(tracks).to be_an_instance_of(Spotify::Models::Paging)
+
+      tracks.items.each do |track|
+        expect(track).to be_an_instance_of(Spotify::Models::Track)
+      end
+    end
+
+    example "Limiting results" do
+      tracks = described_class.tracks(limit_params)
+
+      expect(tracks.items.size).to be_eql(3)
+    end
+
+    example "Offseting results" do
+      original_tracks = described_class.tracks(limit_params)
+      offset_tracks   = described_class.tracks(offset_params)
+
+      expect(original_tracks.items[1].id).to be_eql(offset_tracks.items[0].id)
     end
 
   end

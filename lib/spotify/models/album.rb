@@ -4,44 +4,36 @@ module Spotify
 
     class Album
 
-      attr_reader :album_type, :artists, :available_markets, :copyrights,
-        :external_ids, :external_urls, :genres, :href, :id, :images, :name,
-        :popularity, :release_date_precision, :tracks, :type, :uri
+      attr_reader :album_type, :available_markets, :external_urls,
+        :genres, :href, :id, :images, :name, :type, :uri
 
+      #
+      # Sets the arguments to its variables.
+      #
+      # @param [Hash] args the arguments that will be placed
+      #               on each variable.
+      #
+      # @return [Album] an album object.
+      #
       def initialize(args = {})
         args = args.with_indifferent_access
 
-        if args[:artists]
-          artists = args[:artists].map { |artist| Artist.new(artist) }
-        else
-          artists = nil
-        end
+        # Arrays
+        # images = args[:images].map { |i| Image.new(i) }
 
-        if args[:tracks]
-          klass  = Spotify::Models::Track
-          tracks = Spotify::Models::Paging.new(args[:tracks], klass)
-        else
-          tracks = nil
-        end
+        # Objects
+        # external_urls = ExternalURLs.new(args[:external_urls])
 
         @album_type             = args[:album_type]
-        @artists                = artists
         @available_markets      = args[:available_markets]
+        # @external_urls          = external_urls
         @genres                 = args[:genres]
         @href                   = args[:href]
         @id                     = args[:id]
+        # @images                 = images
         @name                   = args[:name]
-        @popularity             = args[:popularity]
-        @release_date_precision = args[:release_date_precision]
         @type                   = args[:type]
         @uri                    = args[:uri]
-
-        # HACK: Using JSON while the other classes aren't available.
-        @copyrights             = args[:copyrights]
-        @external_ids           = args[:external_ids]
-        @external_urls          = args[:external_urls]
-        @images                 = args[:images]
-        @tracks                 = tracks
       end
 
     end

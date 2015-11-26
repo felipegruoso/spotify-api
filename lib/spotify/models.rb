@@ -7,6 +7,7 @@ require "spotify/models/cursorbased_paging"
 require "spotify/models/followers"
 require "spotify/models/image"
 require "spotify/models/paging"
+require "spotify/models/playlist_track"
 require "spotify/models/track"
 require "spotify/models/track_link"
 

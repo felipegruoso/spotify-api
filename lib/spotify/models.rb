@@ -4,6 +4,8 @@ module Spotify
 end
 
 require "spotify/models/album"
+require "spotify/models/external_id"
+require "spotify/models/external_url"
 require "spotify/models/full"
 require "spotify/models/simplified"
 # require "spotify/models/artist"
@@ -19,4 +21,3 @@ require "spotify/models/simplified"
 # require "spotify/models/saved_track"
 # require "spotify/models/track"
 # require "spotify/models/track_link"
-

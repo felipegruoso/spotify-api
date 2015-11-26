@@ -24,7 +24,7 @@ module Spotify
         # copyrights    = args[:copyrights].map { |c| Copyright.new(c) }
 
         # # Objects
-        # external_ids  = ExternalIDs.new(args[:external_id])
+        external_ids  = Spotify::Models::ExternalID.new(args[:external_ids] || {})
 
         # # Paging items
         # item   = Spotify::Models::Simplified::Track
@@ -32,7 +32,7 @@ module Spotify
 
         # @artists                = artists
         # @copyrights             = copyrights
-        # @external_ids           = external_ids
+        @external_ids           = external_ids
         @popularity             = args[:popularity]
         @release_date           = args[:release_date]
         @release_date_precision = args[:release_date_precision]

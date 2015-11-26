@@ -22,11 +22,11 @@ module Spotify
         # images = args[:images].map { |i| Image.new(i) }
 
         # Objects
-        # external_urls = ExternalURLs.new(args[:external_urls])
+        external_urls = Spotify::Models::ExternalURL.new(args[:external_urls] || {})
 
         @album_type             = args[:album_type]
         @available_markets      = args[:available_markets]
-        # @external_urls          = external_urls
+        @external_urls          = external_urls
         @genres                 = args[:genres]
         @href                   = args[:href]
         @id                     = args[:id]

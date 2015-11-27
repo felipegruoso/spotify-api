@@ -19,7 +19,8 @@ module Spotify
         args = Hash(args).with_indifferent_access
 
         # Arrays
-        @artists = Array(args[:artists]).map { |a| Artist.new(a) }
+        artist  = Spotify::Models::Simplified::Artist
+        artists = Array(args[:artists]).map { |a| artist.new(a) }
 
         # Objects
         external_urls = Spotify::Models::ExternalURL.new(args[:external_urls])

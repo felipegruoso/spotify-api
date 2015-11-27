@@ -1,10 +1,10 @@
-# require "spotify/api/base"
-# require "spotify/api/errors"
-# require "spotify/api/version"
+require "spotify/api/base"
+require "spotify/api/errors"
+require "spotify/api/version"
 
 # require "spotify/api/album"
 # require "spotify/api/artist"
-# require "spotify/api/track"
+require "spotify/api/track"
 
 module Spotify
   module API

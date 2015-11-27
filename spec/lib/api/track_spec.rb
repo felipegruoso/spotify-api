@@ -8,26 +8,26 @@ describe Spotify::API::Track do
 
   context "#search_by_id" do
 
-    example "Performs a simple request" do
+    example "Success: Performs a simple request" do
       track = described_class.search_by_id(id: id)
 
-      expect(track).to         be_an_instance_of(Spotify::Models::Track)
-      expect(track.album).to   be_an_instance_of(Spotify::Models::Album)
+      expect(track).to         be_an_instance_of(Spotify::Models::Full::Track)
+      expect(track.album).to   be_an_instance_of(Spotify::Models::Simplified::Album)
       expect(track.artists).to be_an_instance_of(Array)
 
       track.artists.each do |artist|
-        expect(artist).to be_an_instance_of(Spotify::Models::Artist)
+        expect(artist).to be_an_instance_of(Spotify::Models::Simplified::Artist)
       end
     end
 
-    example "Uses market parameter" do
+    example "Success: Uses market parameter" do
       track = described_class.search_by_id(id: id, market: market)
 
-      expect(track).to be_an_instance_of(Spotify::Models::Track)
+      expect(track).to be_an_instance_of(Spotify::Models::Full::Track)
       expect(track.linked_from).to be_present
     end
 
-    example "Missing mandatory parameter (:id)" do
+    example "Error: Missing mandatory parameter (:id)" do
       track = described_class.search_by_id
 
       expect(track).to be_an_instance_of(Hash)
@@ -38,27 +38,27 @@ describe Spotify::API::Track do
 
   context "#search_by_ids" do
 
-    example "Performs a simple request" do
+    example "Success: Performs a simple request" do
       tracks = described_class.search_by_ids(ids: ids)
 
       expect(tracks).to be_an_instance_of(Array)
 
       tracks.each do |track|
-        expect(track).to be_an_instance_of(Spotify::Models::Track)
+        expect(track).to be_an_instance_of(Spotify::Models::Full::Track)
       end
     end
 
-    example "Uses market parameter" do
+    example "Success: Uses market parameter" do
       tracks = described_class.search_by_ids(ids: ids, market: market)
 
       expect(tracks).to be_an_instance_of(Array)
 
       tracks.each do |track|
-        expect(track).to be_an_instance_of(Spotify::Models::Track)
+        expect(track).to be_an_instance_of(Spotify::Models::Full::Track)
       end
     end
 
-    example "Missing mandatory parameter (:ids)" do
+    example "Error: Missing mandatory parameter (:ids)" do
       tracks = described_class.search_by_ids(market: market)
 
       expect(tracks).to be_an_instance_of(Hash)

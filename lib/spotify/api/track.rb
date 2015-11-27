@@ -18,10 +18,6 @@ module Spotify
       # @return [Spotify::Models::Track] the extracted track.
       #
       def self.search_by_id(args = {})
-        if args[:market].present?
-          args[:market] = [args[:market]].flatten.join(',')
-        end
-
         service_params = args.slice(:timeout, :retries)
         args           = args.slice(:id, :market)
 
@@ -39,13 +35,7 @@ module Spotify
       #   the extracted tracks.
       #
       def self.search_by_ids(args = {})
-        if args[:ids].present?
-          args[:ids] = [args[:ids]].flatten.join(',')
-        end
-
-        if args[:market].present?
-          args[:market] = [args[:market]].flatten.join(',')
-        end
+        args[:ids] = Array(args[:ids]).join(',')
 
         service_params = args.slice(:timeout, :retries)
         args           = args.slice(:ids, :market)
@@ -68,7 +58,7 @@ module Spotify
         response = body
 
         unless response["error"]
-          response = Spotify::Models::Track.new(response)
+          response = Spotify::Models::Full::Track.new(response)
         end
 
         response
@@ -91,7 +81,7 @@ module Spotify
 
         unless response["error"]
           response = response["tracks"].map do |track|
-            Spotify::Models::Track.new(track)
+            Spotify::Models::Full::Track.new(track)
           end
         end
 

@@ -1,122 +1,122 @@
-require 'spec_helper'
+# require 'spec_helper'
 
-describe Spotify::API::Album do
+# describe Spotify::API::Album do
 
-  let(:id)           { '0sNOF9WDwhWunNAHPD3Baj' }
-  let(:ids)          { ["6JWc4iAiJ9FjyK0B59ABb4", "6UXCm6bOO4gFlDQZV5yL37"] }
-  let(:market)       { 'US' }
-  let(:limit_params) {
-    {
-      id:    id,
-      limit: 3
-    }
-  }
-  let(:offset_params) {
-    {
-      id:     id,
-      offset: 1
-    }
-  }
+#   let(:id)           { '0sNOF9WDwhWunNAHPD3Baj' }
+#   let(:ids)          { ["6JWc4iAiJ9FjyK0B59ABb4", "6UXCm6bOO4gFlDQZV5yL37"] }
+#   let(:market)       { 'US' }
+#   let(:limit_params) {
+#     {
+#       id:    id,
+#       limit: 3
+#     }
+#   }
+#   let(:offset_params) {
+#     {
+#       id:     id,
+#       offset: 1
+#     }
+#   }
 
-  context "#search_by_id" do
+#   context "#search_by_id" do
 
-    example "Performs a simple request" do
-      album = described_class.search_by_id(id: id)
+#     example "Performs a simple request" do
+#       album = described_class.search_by_id(id: id)
 
-      expect(album).to be_an_instance_of(Spotify::Models::Album)
-      expect(album.tracks).to be_an_instance_of(Spotify::Models::Paging)
+#       expect(album).to be_an_instance_of(Spotify::Models::Album)
+#       expect(album.tracks).to be_an_instance_of(Spotify::Models::Paging)
 
-      album.tracks.items.each do |track|
-        expect(track).to be_an_instance_of(Spotify::Models::Track)
-      end
-    end
+#       album.tracks.items.each do |track|
+#         expect(track).to be_an_instance_of(Spotify::Models::Track)
+#       end
+#     end
 
-    example "Uses market parameter" do
-      album = described_class.search_by_id(id: id, market: market)
+#     example "Uses market parameter" do
+#       album = described_class.search_by_id(id: id, market: market)
 
-      expect(album).to be_an_instance_of(Spotify::Models::Album)
-      expect(album.tracks).to be_an_instance_of(Spotify::Models::Paging)
+#       expect(album).to be_an_instance_of(Spotify::Models::Album)
+#       expect(album.tracks).to be_an_instance_of(Spotify::Models::Paging)
 
-      album.tracks.items.each do |track|
-        expect(track).to be_an_instance_of(Spotify::Models::Track)
-      end
-    end
+#       album.tracks.items.each do |track|
+#         expect(track).to be_an_instance_of(Spotify::Models::Track)
+#       end
+#     end
 
-    example "Missing mandatory parameter (:id)" do
-      album = described_class.search_by_id
+#     example "Missing mandatory parameter (:id)" do
+#       album = described_class.search_by_id
 
-      expect(album).to be_an_instance_of(Hash)
-      expect(album['error']).to be_present
-    end
+#       expect(album).to be_an_instance_of(Hash)
+#       expect(album['error']).to be_present
+#     end
 
-  end
+#   end
 
-  context "#search_by_ids" do
+#   context "#search_by_ids" do
 
-    example "Performs a simple request" do
-      albums = described_class.search_by_ids(ids: ids)
+#     example "Performs a simple request" do
+#       albums = described_class.search_by_ids(ids: ids)
 
-      expect(albums).to be_an_instance_of(Array)
+#       expect(albums).to be_an_instance_of(Array)
 
-      albums.each do |album|
-        expect(album).to be_an_instance_of(Spotify::Models::Album)
-      end
-    end
+#       albums.each do |album|
+#         expect(album).to be_an_instance_of(Spotify::Models::Album)
+#       end
+#     end
 
-    example "Uses market parameter" do
-      albums = described_class.search_by_ids(ids: ids, market: market)
+#     example "Uses market parameter" do
+#       albums = described_class.search_by_ids(ids: ids, market: market)
 
-      expect(albums).to be_an_instance_of(Array)
+#       expect(albums).to be_an_instance_of(Array)
 
-      albums.each do |album|
-        expect(album).to be_an_instance_of(Spotify::Models::Album)
-      end
-    end
+#       albums.each do |album|
+#         expect(album).to be_an_instance_of(Spotify::Models::Album)
+#       end
+#     end
 
-    example "Missing mandatory parameter (:ids)" do
-      albums = described_class.search_by_ids(market: market)
+#     example "Missing mandatory parameter (:ids)" do
+#       albums = described_class.search_by_ids(market: market)
 
-      expect(albums).to be_an_instance_of(Hash)
-      expect(albums['error']).to be_present
-    end
+#       expect(albums).to be_an_instance_of(Hash)
+#       expect(albums['error']).to be_present
+#     end
 
-  end
+#   end
 
-  context '#tracks' do
+#   context '#tracks' do
 
-    example "Performs a simple request" do
-      tracks = described_class.tracks(id: id)
+#     example "Performs a simple request" do
+#       tracks = described_class.tracks(id: id)
 
-      expect(tracks).to be_an_instance_of(Spotify::Models::Paging)
+#       expect(tracks).to be_an_instance_of(Spotify::Models::Paging)
 
-      tracks.items.each do |track|
-        expect(track).to be_an_instance_of(Spotify::Models::Track)
-      end
-    end
+#       tracks.items.each do |track|
+#         expect(track).to be_an_instance_of(Spotify::Models::Track)
+#       end
+#     end
 
-    example "Uses market parameter" do
-      tracks = described_class.tracks(id: id, market: market)
+#     example "Uses market parameter" do
+#       tracks = described_class.tracks(id: id, market: market)
 
-      expect(tracks).to be_an_instance_of(Spotify::Models::Paging)
+#       expect(tracks).to be_an_instance_of(Spotify::Models::Paging)
 
-      tracks.items.each do |track|
-        expect(track).to be_an_instance_of(Spotify::Models::Track)
-      end
-    end
+#       tracks.items.each do |track|
+#         expect(track).to be_an_instance_of(Spotify::Models::Track)
+#       end
+#     end
 
-    example "Limiting results" do
-      tracks = described_class.tracks(limit_params)
+#     example "Limiting results" do
+#       tracks = described_class.tracks(limit_params)
 
-      expect(tracks.items.size).to be_eql(3)
-    end
+#       expect(tracks.items.size).to be_eql(3)
+#     end
 
-    example "Offseting results" do
-      original_tracks = described_class.tracks(limit_params)
-      offset_tracks   = described_class.tracks(offset_params)
+#     example "Offseting results" do
+#       original_tracks = described_class.tracks(limit_params)
+#       offset_tracks   = described_class.tracks(offset_params)
 
-      expect(original_tracks.items[1].id).to be_eql(offset_tracks.items[0].id)
-    end
+#       expect(original_tracks.items[1].id).to be_eql(offset_tracks.items[0].id)
+#     end
 
-  end
+#   end
 
-end
+# end

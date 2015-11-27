@@ -7,18 +7,17 @@ describe Spotify::Models::Paging do
     { name: 'artist two' }
   ]}
 
-  context "initializing a paging object for" do
+  example "initializing a paging object for" do
 
-    example "Artists" do
-      paging = Spotify::Models::Paging.new({ items: artist }, Spotify::Models::Artist)
+    # Example model. All models has the same behavior.
+    model  = Spotify::Models::Artist
+    paging = Spotify::Models::Paging.new({ items: artist }, model)
 
-      expect(paging.items).to be_an_instance_of(Array)
+    expect(paging.items).to be_an_instance_of(Array)
 
-      paging.items.zip(artist).each do |item, artist|
-        expect(item).to be_an_instance_of(Spotify::Models::Artist)
-        expect(item.name).to be_eql(artist[:name])
-      end
-
+    paging.items.zip(artist).each do |item, artist|
+      expect(item).to      be_an_instance_of(model)
+      expect(item.name).to be_eql(artist[:name])
     end
 
   end

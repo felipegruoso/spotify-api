@@ -34,9 +34,7 @@ module Spotify
       # @return [Spotify::Models::Album] the extracted album.
       #
       def self.search_by_ids(args = {})
-        if args[:ids].present?
-          args[:ids] = [args[:ids]].flatten.join(',')
-        end
+        args[:ids] = Array(args[:ids]).join(',')
 
         service_params = args.slice(:timeout, :retries)
         args           = args.slice(:ids)
@@ -76,7 +74,7 @@ module Spotify
         response = body
 
         unless response["error"]
-          response = Spotify::Models::Album.new(response)
+          response = Spotify::Models::Full::Album.new(response)
         end
 
         response
@@ -98,7 +96,7 @@ module Spotify
 
         unless response["error"]
           response = response["albums"].map do |album|
-            Spotify::Models::Album.new(album)
+            Spotify::Models::Full::Album.new(album)
           end
         end
 
@@ -114,7 +112,7 @@ module Spotify
         response = body
 
         unless response["error"]
-          klass    = Spotify::Models::Track
+          klass    = Spotify::Models::Simplified::Track
           response = Spotify::Models::Paging.new(response, klass)
         end
 

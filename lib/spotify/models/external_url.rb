@@ -4,8 +4,16 @@ module Spotify
 
     class ExternalURL
 
+      #
+      # Sets the arguments to its variables.
+      #
+      # @param [Hash] args the arguments that will be placed
+      #               on each variable.
+      #
+      # @return [ExternalURL] an external url object.
+      #
       def initialize(args = {})
-        args = args.with_indifferent_access
+        args = Hash(args).with_indifferent_access
 
         hsh = {
           spotify: args[:spotify]

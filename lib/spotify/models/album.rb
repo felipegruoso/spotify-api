@@ -16,13 +16,13 @@ module Spotify
       # @return [Album] an album object.
       #
       def initialize(args = {})
-        args = args.with_indifferent_access
+        args = Hash(args).with_indifferent_access
 
         # Arrays
-        # images = args[:images].map { |i| Image.new(i) }
+        images = Array(args[:images]).map { |i| Spotify::Models::Image.new(i) }
 
         # Objects
-        external_urls = Spotify::Models::ExternalURL.new(args[:external_urls] || {})
+        external_urls = Spotify::Models::ExternalURL.new(args[:external_urls])
 
         @album_type             = args[:album_type]
         @available_markets      = args[:available_markets]
@@ -30,7 +30,7 @@ module Spotify
         @genres                 = args[:genres]
         @href                   = args[:href]
         @id                     = args[:id]
-        # @images                 = images
+        @images                 = images
         @name                   = args[:name]
         @type                   = args[:type]
         @uri                    = args[:uri]

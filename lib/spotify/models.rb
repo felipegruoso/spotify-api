@@ -4,9 +4,12 @@ module Spotify
 end
 
 require "spotify/models/album"
+require "spotify/models/artist"
 require "spotify/models/external_id"
 require "spotify/models/external_url"
+require "spotify/models/follower"
 require "spotify/models/full"
+require "spotify/models/image"
 require "spotify/models/simplified"
 # require "spotify/models/artist"
 # require "spotify/models/category"

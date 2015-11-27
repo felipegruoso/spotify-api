@@ -17,20 +17,21 @@ module Spotify
       #
       def initialize(args = {})
         super(args)
-        args = args.with_indifferent_access
+
+        args = Hash(args).with_indifferent_access
 
         # Arrays
-        # artists       = args[:artists].map    { |a| Artist.new(a)    }
-        # copyrights    = args[:copyrights].map { |c| Copyright.new(c) }
+        artists    = Array(args[:artists]).map    { |a| Artist.new(a)    }
+        # copyrights = Array(args[:copyrights]).map { |c| Copyright.new(c) }
 
-        # # Objects
-        external_ids  = Spotify::Models::ExternalID.new(args[:external_ids] || {})
+        # Objects
+        external_ids  = Spotify::Models::ExternalID.new(args[:external_ids])
 
-        # # Paging items
+        # Paging items
         # item   = Spotify::Models::Simplified::Track
         # tracks = Spotify::Models::Paging.new(args[:tracks], item)
 
-        # @artists                = artists
+        @artists                = artists
         # @copyrights             = copyrights
         @external_ids           = external_ids
         @popularity             = args[:popularity]

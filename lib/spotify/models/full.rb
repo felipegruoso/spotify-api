@@ -6,3 +6,4 @@ module Spotify
 end
 
 require "spotify/models/full/album"
+require "spotify/models/full/artist"

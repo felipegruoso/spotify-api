@@ -4,8 +4,16 @@ module Spotify
 
     class ExternalID
 
+      #
+      # Sets the arguments to its variables.
+      #
+      # @param [Hash] args the arguments that will be placed
+      #               on each variable.
+      #
+      # @return [ExternalID] an external id object.
+      #
       def initialize(args = {})
-        args = args.with_indifferent_access
+        args = Hash(args).with_indifferent_access
 
         hsh = {
           isrc: args[:isrc],

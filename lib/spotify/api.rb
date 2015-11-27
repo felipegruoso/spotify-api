@@ -3,7 +3,7 @@ require "spotify/api/errors"
 require "spotify/api/version"
 
 require "spotify/api/album"
-# require "spotify/api/artist"
+require "spotify/api/artist"
 require "spotify/api/track"
 
 module Spotify

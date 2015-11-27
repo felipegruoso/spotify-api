@@ -35,9 +35,7 @@ module Spotify
       #   the extracted artists.
       #
       def self.search_by_ids(args = {})
-        if args[:ids].present?
-          args[:ids] = [args[:ids]].flatten.join(',')
-        end
+        args[:ids] = Array(args[:ids]).join(',')
 
         service_params = args.slice(:timeout, :retries)
         args           = args.slice(:ids)
@@ -90,13 +88,7 @@ module Spotify
       #   the extracted artist's albums.
       #
       def self.albums(args = {})
-        if args[:album_type].present?
-          args[:album_type] = [args[:album_type]].flatten.join(',')
-        end
-
-        if args[:market].present?
-          args[:market] = [args[:market]].flatten.join(',')
-        end
+        args[:album_type] = Array(args[:album_type]).join(',')
 
         args           = args.slice(:id, :album_type, :market, :limit, :offset)
         service_params = args.slice(:timeout, :retries)
@@ -120,7 +112,7 @@ module Spotify
         response = body
 
         unless response["error"]
-          response = Spotify::Models::Artist.new(response)
+          response = Spotify::Models::Full::Artist.new(response)
         end
 
         response
@@ -142,7 +134,7 @@ module Spotify
 
         unless response["error"]
           response = response["artists"].map do |artist|
-            Spotify::Models::Artist.new(artist)
+            Spotify::Models::Full::Artist.new(artist)
           end
         end
 
@@ -169,7 +161,7 @@ module Spotify
 
         unless response["error"]
           response = response["tracks"].map do |track|
-            Spotify::Models::Track.new(track)
+            Spotify::Models::Full::Track.new(track)
           end
         end
 
@@ -195,7 +187,7 @@ module Spotify
 
         unless response["error"]
           response = response["artists"].map do |artist|
-            Spotify::Models::Artist.new(artist)
+            Spotify::Models::Full::Artist.new(artist)
           end
         end
 
@@ -221,7 +213,7 @@ module Spotify
         response = body
 
         unless response["error"]
-          klass    = Spotify::Models::Artist
+          klass    = Spotify::Models::Simplified::Album
           response = Spotify::Models::Paging.new(response, klass)
         end
 

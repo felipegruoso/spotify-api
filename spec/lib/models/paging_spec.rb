@@ -7,7 +7,7 @@ describe Spotify::Models::Paging do
     { name: 'artist two' }
   ]}
 
-  example "initializing a paging object for" do
+  example "initializing a paging object" do
 
     # Example model. All models has the same behavior.
     model  = Spotify::Models::Artist

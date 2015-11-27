@@ -3,13 +3,9 @@ require 'spec_helper'
 describe Spotify::API::Artist do
 
   let(:id)  { '0OdUWJ0sBjDrqHygGUXeCF' }
-  let(:ids) {
-    [
-      '0oSGxfWSnnOXhD2fKuz2Gy',
-      '3dBVyJ7JuOMt4GE9607Qin'
-    ]
-  }
+  let(:ids) { ['0oSGxfWSnnOXhD2fKuz2Gy', '3dBVyJ7JuOMt4GE9607Qin'] }
   let(:country)      { 'US' }
+  let(:market)       { country }
   let(:album_params) {
     {
       id:         '1vCWHaC5f2uS3yhpwWbIA6',
@@ -19,25 +15,71 @@ describe Spotify::API::Artist do
       offset:     0
     }
   }
-  let(:limit_params) {
-    {
-      id:    id,
-      limit: 3
-    }
-  }
+  let(:limit_params)    { { id: id, limit: 3 } }
   let(:offset_params)   { limit_params.merge({ offset: 1 }) }
-  let(:unique_album)    {
-    {
-      id:         id,
-      album_type: 'single'
-    }
-  }
-  let(:multiple_albums) {
-    {
-      id:         id,
-      album_type: ['album', 'single']
-    }
-  }
+  let(:unique_album)    { { id: id, album_type: 'single' } }
+  let(:multiple_albums) { { id: id, album_type: ['album', 'single'] } }
+  let(:search_params)   { { q: "Tania" } }
+
+  context "#search" do
+
+    example "Success: Performs a simple request" do
+      artists = described_class.search(search_params)
+
+      expect(artists).to be_an_instance_of(Spotify::Models::Paging)
+
+      artists.items.each do |artist|
+        expect(artist).to be_an_instance_of(Spotify::Models::Full::Artist)
+      end
+    end
+
+    example "Success: Uses market parameter" do
+      artists = described_class.search(search_params.merge({ market: market }))
+
+      expect(artists).to be_an_instance_of(Spotify::Models::Paging)
+
+      artists.items.each do |artist|
+        expect(artist).to be_an_instance_of(Spotify::Models::Full::Artist)
+      end
+    end
+
+    example "Success: Limiting results" do
+      artists = described_class.search(search_params.merge(limit_params).merge(id: '1vCWHaC5f2uS3yhpwWbIA6'))
+
+      expect(artists).to be_an_instance_of(Spotify::Models::Paging)
+      expect(artists.items.size).to be_eql(3)
+    end
+
+    example "Success: Offseting results" do
+      offset = search_params.merge(offset_params)
+
+      original_artists = described_class.search(search_params.merge(id: '1vCWHaC5f2uS3yhpwWbIA6'))
+      offset_artists   = described_class.search(offset)
+
+      expect(original_artists.items[1].id).to be_eql(offset_artists.items[0].id)
+    end
+
+    example "Success: Using all parameters" do
+      params = search_params.merge(offset_params).merge(limit_params)
+      params = params.merge({ market: market})
+
+      artists = described_class.search(params)
+
+      expect(artists).to be_an_instance_of(Spotify::Models::Paging)
+
+      artists.items.each do |artist|
+        expect(artist).to be_an_instance_of(Spotify::Models::Full::Artist)
+      end
+    end
+
+    example "Error: Missing mandatory parameter (:q)" do
+      artists = described_class.search
+
+      expect(artists).to be_an_instance_of(Hash)
+      expect(artists['error']).to be_present
+    end
+
+  end
 
   context '#search_by_id' do
 

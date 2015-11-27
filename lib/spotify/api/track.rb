@@ -9,13 +9,31 @@ module Spotify
       TRACKS_URL = "#{BASE_URL}tracks"
 
       #
+      # Gets the tracks related to the given parameters.
+      #
+      # @param [Hash] args the search arguments.
+      # @option [Fixnum] :timeout the max time a request can take.
+      # @option [Fixnum] :retries the number of retries if necessary.
+      #
+      # @return [Spotify::Models::Paging] the extracted tracks.
+      #
+      def self.search(args = {})
+        args[:type] = :track
+
+        service_params = args.slice(:timeout, :retries)
+        args           = args.slice(:q, :market, :type, :limit, :offset)
+
+        self.new(service_params).search(args)
+      end
+
+      #
       # Gets a track.
       #
       # @param [Hash] args the search arguments.
       # @option [Fixnum] :timeout the max time a request can take.
       # @option [Fixnum] :retries the number of retries if necessary.
       #
-      # @return [Spotify::Models::Track] the extracted track.
+      # @return [Full::Track] the extracted track.
       #
       def self.search_by_id(args = {})
         service_params = args.slice(:timeout, :retries)
@@ -31,7 +49,7 @@ module Spotify
       # @option [Fixnum] :timeout the max time a request can take.
       # @option [Fixnum] :retries the number of retries if necessary.
       #
-      # @return [Array<Spotify::Models::Track>] an array containing
+      # @return [Array<Full::Track>] an array containing
       #   the extracted tracks.
       #
       def self.search_by_ids(args = {})
@@ -44,13 +62,40 @@ module Spotify
       end
 
       #
+      # Gets the tracks related to the given parameters.
+      #
+      # @param [Hash] args the search arguments.
+      # @option [Fixnum] :timeout the max time a request can take.
+      # @option [Fixnum] :retries the number of retries if necessary.
+      #
+      # @return [Spotify::Models::Paging] the extracted tracks.
+      #
+      def search(args = {})
+        if args[:market].to_s.to_sym == FROM_TOKEN
+          # TODO: Authorization.
+          return Spotify::API::Errors::NOT_AVAILABLE
+        end
+
+        get(SEARCH_URL, args)
+
+        response = body
+
+        unless response["error"]
+          klass    = Spotify::Models::Full::Track
+          response = Spotify::Models::Paging.new(response["tracks"], klass)
+        end
+
+        response
+      end
+
+      #
       # Gets a track.
       #
       # @param [Hash] args the search arguments.
       # @option [String] :id the track id.
       # @option [String] :market the market.
       #
-      # @return [Spotify::Models::Track] the extracted track.
+      # @return [Full::Track] the extracted track.
       #
       def search_by_id(args = {})
         get(TRACKS_URL + '/' + args[:id].to_s, args.slice(:market))
@@ -71,7 +116,7 @@ module Spotify
       # @option [String] :ids the tracks ids between ",".
       # @option [String] :market the market.
       #
-      # @return [Array<Spotify::Models::Track>] an array containing
+      # @return [Array<Full::Track>] an array containing
       #   the extracted tracks.
       #
       def search_by_ids(args = {})

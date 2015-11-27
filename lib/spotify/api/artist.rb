@@ -9,13 +9,31 @@ module Spotify
       ARTISTS_URL = "#{BASE_URL}artists"
 
       #
+      # Gets the artists related to the given parameters.
+      #
+      # @param [Hash] args the search arguments.
+      # @option [Fixnum] :timeout the max time a request can take.
+      # @option [Fixnum] :retries the number of retries if necessary.
+      #
+      # @return [Spotify::Models::Paging] the extracted artists.
+      #
+      def self.search(args = {})
+        args[:type] = :artist
+
+        service_params = args.slice(:timeout, :retries)
+        args           = args.slice(:q, :market, :type, :limit, :offset)
+
+        self.new(service_params).search(args)
+      end
+
+      #
       # Gets an artist.
       #
       # @param [Hash] args the search arguments.
       # @option [Fixnum] :timeout the max time a request can take.
       # @option [Fixnum] :retries the number of retries if necessary.
       #
-      # @return [Spotify::Models::Artist] the extracted artist.
+      # @return [Full::Artist] the extracted artist.
       #
       def self.search_by_id(args = {})
         service_params = args.slice(:timeout, :retries)
@@ -31,7 +49,7 @@ module Spotify
       # @option [Fixnum] :timeout the max time a request can take.
       # @option [Fixnum] :retries the number of retries if necessary.
       #
-      # @return [Array<Spotify::Models::Artist>] an array containing
+      # @return [Array<Full::Artist>] an array containing
       #   the extracted artists.
       #
       def self.search_by_ids(args = {})
@@ -50,7 +68,7 @@ module Spotify
       # @option [Fixnum] :timeout the max time a request can take.
       # @option [Fixnum] :retries the number of retries if necessary.
       #
-      # @return [Array<Spotify::Models::Track>] an array containing
+      # @return [Array<Full::Track>] an array containing
       #   the extracted artist's top tracks.
       #
       def self.top_tracks(args = {})
@@ -67,7 +85,7 @@ module Spotify
       # @option [Fixnum] :timeout the max time a request can take.
       # @option [Fixnum] :retries the number of retries if necessary.
       #
-      # @return [Array<Spotify::Models::Artist>] an array containing
+      # @return [Array<Full::Artist>] an array containing
       #   the extracted artist's related artists.
       #
       def self.related_artists(args = {})
@@ -84,8 +102,7 @@ module Spotify
       # @option [Fixnum] :timeout the max time a request can take.
       # @option [Fixnum] :retries the number of retries if necessary.
       #
-      # @return [Array<Spotify::Models::Paging>] an array containing
-      #   the extracted artist's albums.
+      # @return [Paging] an array containing the extracted artist's albums.
       #
       def self.albums(args = {})
         args[:album_type] = Array(args[:album_type]).join(',')
@@ -97,12 +114,39 @@ module Spotify
       end
 
       #
+      # Gets the artists related to the given parameters.
+      #
+      # @param [Hash] args the search arguments.
+      # @option [Fixnum] :timeout the max time a request can take.
+      # @option [Fixnum] :retries the number of retries if necessary.
+      #
+      # @return [Spotify::Models::Paging] the extracted artists.
+      #
+      def search(args = {})
+        if args[:market].to_s.to_sym == FROM_TOKEN
+          # TODO: Authorization.
+          return Spotify::API::Errors::NOT_AVAILABLE
+        end
+
+        get(SEARCH_URL, args)
+
+        response = body
+
+        unless response["error"]
+          klass    = Spotify::Models::Full::Artist
+          response = Spotify::Models::Paging.new(response["artists"], klass)
+        end
+
+        response
+      end
+
+      #
       # Gets an artist.
       #
       # @param [Hash] args the search arguments.
       # @option [String] :id the artist id.
       #
-      # @return [Spotify::Models::Artist] the extracted artist.
+      # @return [Full::Artist] the extracted artist.
       #
       def search_by_id(args = {})
         url = ARTISTS_URL + '/' + args[:id].to_s
@@ -124,7 +168,7 @@ module Spotify
       # @param [Hash] args the search arguments.
       # @option [String] :ids the artists ids between ",".
       #
-      # @return [Array<Spotify::Models::Artist>] an array containing
+      # @return [Array<Full::Artist>] an array containing
       #   the extracted artists.
       #
       def search_by_ids(args = {})
@@ -148,7 +192,7 @@ module Spotify
       # @option [String] :id the artist id.
       # @option [String] :country the request country.
       #
-      # @return [Array<Spotify::Models::Track>] an array containing
+      # @return [Array<Full::Track>] an array containing
       #   the extracted artist's top tracks.
       #
       def top_tracks(args = {})
@@ -175,7 +219,7 @@ module Spotify
       # @option [Fixnum] :timeout the max time a request can take.
       # @option [Fixnum] :retries the number of retries if necessary.
       #
-      # @return [Array<Spotify::Models::Artist>] an array containing
+      # @return [Array<Full::Artist>] an array containing
       #   the extracted artist's related artists.
       #
       def related_artists(args = {})
@@ -201,8 +245,8 @@ module Spotify
       # @option [Fixnum] :timeout the max time a request can take.
       # @option [Fixnum] :retries the number of retries if necessary.
       #
-      # @return [Array<Spotify::Models::Paging>] an array containing
-      #   the extracted artist's related artists.
+      # @return [Paging] an array containing the extracted artist's
+      #   related artists.
       #
       def albums(args = {})
         url    = ARTISTS_URL + '/' + args[:id].to_s + '/albums'

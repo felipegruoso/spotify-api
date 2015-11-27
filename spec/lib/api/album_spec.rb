@@ -2,21 +2,72 @@ require 'spec_helper'
 
 describe Spotify::API::Album do
 
-  let(:id)           { '0sNOF9WDwhWunNAHPD3Baj' }
-  let(:ids)          { ["6JWc4iAiJ9FjyK0B59ABb4", "6UXCm6bOO4gFlDQZV5yL37"] }
-  let(:market)       { 'US' }
-  let(:limit_params) {
-    {
-      id:    id,
-      limit: 3
-    }
-  }
-  let(:offset_params) {
-    {
-      id:     id,
-      offset: 1
-    }
-  }
+  let(:id)            { '0sNOF9WDwhWunNAHPD3Baj' }
+  let(:ids)           { ["6JWc4iAiJ9FjyK0B59ABb4", "6UXCm6bOO4gFlDQZV5yL37"] }
+  let(:market)        { 'US' }
+  let(:limit_params)  { { id: id, limit: 3 } }
+  let(:offset_params) { { id: id, offset: 1 } }
+  let(:search_params) { { q: "She's So Unusual" } }
+
+  context "#search" do
+
+    example "Success: Performs a simple request" do
+      albums = described_class.search(search_params)
+
+      expect(albums).to be_an_instance_of(Spotify::Models::Paging)
+
+      albums.items.each do |album|
+        expect(album).to be_an_instance_of(Spotify::Models::Simplified::Album)
+      end
+    end
+
+    example "Success: Uses market parameter" do
+      albums = described_class.search(search_params.merge({ market: market }))
+
+      expect(albums).to be_an_instance_of(Spotify::Models::Paging)
+
+      albums.items.each do |album|
+        expect(album).to be_an_instance_of(Spotify::Models::Simplified::Album)
+      end
+    end
+
+    example "Success: Limiting results" do
+      albums = described_class.search(search_params.merge(limit_params))
+
+      expect(albums).to be_an_instance_of(Spotify::Models::Paging)
+      expect(albums.items.size).to be_eql(3)
+    end
+
+    example "Success: Offseting results" do
+      offset = search_params.merge(offset_params)
+
+      original_albums = described_class.search(search_params)
+      offset_albums   = described_class.search(offset)
+
+      expect(original_albums.items[1].id).to be_eql(offset_albums.items[0].id)
+    end
+
+    example "Success: Using all parameters" do
+      params = search_params.merge(offset_params).merge(limit_params)
+      params = params.merge({ market: market})
+
+      albums = described_class.search(params)
+
+      expect(albums).to be_an_instance_of(Spotify::Models::Paging)
+
+      albums.items.each do |album|
+        expect(album).to be_an_instance_of(Spotify::Models::Simplified::Album)
+      end
+    end
+
+    example "Error: Missing mandatory parameter (:q)" do
+      albums = described_class.search
+
+      expect(albums).to be_an_instance_of(Hash)
+      expect(albums['error']).to be_present
+    end
+
+  end
 
   context "#search_by_id" do
 

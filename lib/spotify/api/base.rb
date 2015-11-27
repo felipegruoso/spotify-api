@@ -13,9 +13,19 @@ module Spotify
       BASE_URL = "https://api.spotify.com/v1/"
 
       #
+      # The API search endpoint.
+      #
+      SEARCH_URL = "#{BASE_URL}search"
+
+      #
       # The max retries limit.
       #
       MAX_RETRIES = 5
+
+      #
+      # Restrict value for market variable on search methods.
+      #
+      FROM_TOKEN = :from_token
 
       #
       # Initializes the optional arguments.

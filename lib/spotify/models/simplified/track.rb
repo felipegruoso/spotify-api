@@ -5,14 +5,14 @@ module Spotify
     #
     # This class is kept only to provide a better visualization.
     #
-    class Simplified::Album < Models::Album
+    class Simplified::Track < Models::Track
 
       #
       # Sets the arguments to its variables.
       #
       # @param [Hash] args the arguments that will be placed on each variable.
       #
-      # @return [Simplified::Album] a simplified album object.
+      # @return [Simplified::Track] a simplified track object.
       #
       def initialize(args = {}); super(args); end;
 

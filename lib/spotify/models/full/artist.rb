@@ -9,8 +9,7 @@ module Spotify
       #
       # Sets the arguments to its variables.
       #
-      # @param [Hash] args the arguments that will be placed
-      #               on each variable.
+      # @param [Hash] args the arguments that will be placed on each variable.
       #
       # @return [Full::Artist] a full album object.
       #
@@ -23,13 +22,12 @@ module Spotify
         images = Array(args[:images]).map { |i| Spotify::Models::Image.new(i) }
 
         # Objects
-        external_ids = Spotify::Models::ExternalID.new(args[:external_ids])
-        follower     = Spotify::Models::Follower.new(args[:followers])
+        follower = Spotify::Models::Follower.new(args[:followers])
 
-        @followers  = follower
-        @genres     = args[:genres]
-        @images     = images
-        @popularity = args[:popularity]
+        @followers     = follower
+        @genres        = args[:genres]
+        @images        = images
+        @popularity    = args[:popularity]
       end
 
     end

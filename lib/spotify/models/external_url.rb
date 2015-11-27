@@ -7,8 +7,7 @@ module Spotify
       #
       # Sets the arguments to its variables.
       #
-      # @param [Hash] args the arguments that will be placed
-      #               on each variable.
+      # @param [Hash] args the arguments that will be placed on each variable.
       #
       # @return [ExternalURL] an external url object.
       #

@@ -10,8 +10,7 @@ module Spotify
       #
       # Sets the arguments to its variables.
       #
-      # @param [Hash] args the arguments that will be placed
-      #               on each variable.
+      # @param [Hash] args the arguments that will be placed on each variable.
       #
       # @return [Full::Album] a full album object.
       #
@@ -28,8 +27,8 @@ module Spotify
         external_ids  = Spotify::Models::ExternalID.new(args[:external_ids])
 
         # Paging items
-        # item   = Spotify::Models::Simplified::Track
-        # tracks = Spotify::Models::Paging.new(args[:tracks], item)
+        item   = Spotify::Models::Simplified::Track
+        tracks = Spotify::Models::Paging.new(args[:tracks], item)
 
         @artists                = artists
         # @copyrights             = copyrights
@@ -37,7 +36,7 @@ module Spotify
         @popularity             = args[:popularity]
         @release_date           = args[:release_date]
         @release_date_precision = args[:release_date_precision]
-        # @tracks                 = tracks
+        @tracks                 = tracks
       end
 
     end

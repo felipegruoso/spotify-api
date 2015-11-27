@@ -7,3 +7,4 @@ end
 
 require "spotify/models/full/album"
 require "spotify/models/full/artist"
+require "spotify/models/full/track"

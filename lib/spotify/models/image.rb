@@ -17,7 +17,7 @@ module Spotify
         args = Hash(args).with_indifferent_access
 
         @height = args[:height]
-        @uri    = args[:uri]
+        @url    = args[:url]
         @width  = args[:width]
       end
 

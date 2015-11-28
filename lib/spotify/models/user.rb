@@ -4,7 +4,7 @@ module Spotify
 
     class User
 
-      attr_reader :display_string, :external_urls, :followers, :href,
+      attr_reader :display_name, :external_urls, :followers, :href,
         :id, :images, :type, :uri
 
       #
@@ -24,14 +24,14 @@ module Spotify
         external_urls = Spotify::Models::ExternalURL.new(args[:external_urls])
         follower      = Spotify::Models::Follower.new(args[:followers])
 
-        @display_string = display_string
-        @external_urls  = external_urls
-        @followers      = follower
-        @href           = args[:href]
-        @id             = args[:id]
-        @images         = images
-        @type           = args[:type]
-        @uri            = args[:uri]
+        @display_name  = args[:display_name]
+        @external_urls = external_urls
+        @followers     = follower
+        @href          = args[:href]
+        @id            = args[:id]
+        @images        = images
+        @type          = args[:type]
+        @uri           = args[:uri]
       end
 
     end

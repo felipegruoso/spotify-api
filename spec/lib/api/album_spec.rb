@@ -63,8 +63,7 @@ describe Spotify::API::Album do
     example "Error: Missing mandatory parameter (:q)" do
       albums = described_class.search
 
-      expect(albums).to be_an_instance_of(Hash)
-      expect(albums['error']).to be_present
+      expect(albums).to be_an_instance_of(Spotify::Models::Error)
     end
 
   end
@@ -96,8 +95,7 @@ describe Spotify::API::Album do
     example "Error: Missing mandatory parameter (:id)" do
       album = described_class.search_by_id
 
-      expect(album).to be_an_instance_of(Hash)
-      expect(album['error']).to be_present
+      expect(album).to be_an_instance_of(Spotify::Models::Error)
     end
 
   end
@@ -127,8 +125,7 @@ describe Spotify::API::Album do
     example "Error: Missing mandatory parameter (:ids)" do
       albums = described_class.search_by_ids(market: market)
 
-      expect(albums).to be_an_instance_of(Hash)
-      expect(albums['error']).to be_present
+      expect(albums).to be_an_instance_of(Spotify::Models::Error)
     end
 
   end

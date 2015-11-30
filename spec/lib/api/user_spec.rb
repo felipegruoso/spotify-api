@@ -15,8 +15,7 @@ describe Spotify::API::User do
     example "Error: Missing mandatory parameter (:id)" do
       track = described_class.search_by_id
 
-      expect(track).to be_an_instance_of(Hash)
-      expect(track['error']).to be_present
+      expect(track).to be_an_instance_of(Spotify::Models::Error)
     end
 
   end

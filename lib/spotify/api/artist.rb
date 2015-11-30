@@ -130,14 +130,11 @@ module Spotify
 
         get(SEARCH_URL, args)
 
-        response = body
+        define_response do
+          klass = Spotify::Models::Full::Artist
 
-        unless response["error"]
-          klass    = Spotify::Models::Full::Artist
-          response = Spotify::Models::Paging.new(response["artists"], klass)
+          Spotify::Models::Paging.new(response["artists"], klass)
         end
-
-        response
       end
 
       #
@@ -153,13 +150,9 @@ module Spotify
 
         get(url)
 
-        response = body
-
-        unless response["error"]
-          response = Spotify::Models::Full::Artist.new(response)
+        define_response do
+          Spotify::Models::Full::Artist.new(response)
         end
-
-        response
       end
 
       #
@@ -174,15 +167,11 @@ module Spotify
       def search_by_ids(args = {})
         get(ARTISTS_URL, args)
 
-        response = body
-
-        unless response["error"]
-          response = response["artists"].map do |artist|
+        define_response do
+          response["artists"].map do |artist|
             Spotify::Models::Full::Artist.new(artist)
           end
         end
-
-        response
       end
 
       #
@@ -201,15 +190,11 @@ module Spotify
 
         get(url, params)
 
-        response = body
-
-        unless response["error"]
-          response = response["tracks"].map do |track|
+        define_response do
+          response["tracks"].map do |track|
             Spotify::Models::Full::Track.new(track)
           end
         end
-
-        response
       end
 
       #
@@ -227,15 +212,11 @@ module Spotify
 
         get(url)
 
-        response = body
-
-        unless response["error"]
-          response = response["artists"].map do |artist|
+        define_response do
+          response["artists"].map do |artist|
             Spotify::Models::Full::Artist.new(artist)
           end
         end
-
-        response
       end
 
       #
@@ -254,14 +235,11 @@ module Spotify
 
         get(url, params)
 
-        response = body
+        define_response do
+          klass = Spotify::Models::Simplified::Album
 
-        unless response["error"]
-          klass    = Spotify::Models::Simplified::Album
-          response = Spotify::Models::Paging.new(response, klass)
+          Spotify::Models::Paging.new(response, klass)
         end
-
-        response
       end
 
     end

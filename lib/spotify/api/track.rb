@@ -78,14 +78,11 @@ module Spotify
 
         get(SEARCH_URL, args)
 
-        response = body
+        define_response do
+          klass = Spotify::Models::Full::Track
 
-        unless response["error"]
-          klass    = Spotify::Models::Full::Track
-          response = Spotify::Models::Paging.new(response["tracks"], klass)
+          Spotify::Models::Paging.new(response["tracks"], klass)
         end
-
-        response
       end
 
       #
@@ -100,13 +97,9 @@ module Spotify
       def search_by_id(args = {})
         get(TRACKS_URL + '/' + args[:id].to_s, args.slice(:market))
 
-        response = body
-
-        unless response["error"]
-          response = Spotify::Models::Full::Track.new(response)
+        define_response do
+          Spotify::Models::Full::Track.new(response)
         end
-
-        response
       end
 
       #
@@ -122,15 +115,11 @@ module Spotify
       def search_by_ids(args = {})
         get(TRACKS_URL, args)
 
-        response = body
-
-        unless response["error"]
-          response = response["tracks"].map do |track|
+        define_response do
+          response["tracks"].map do |track|
             Spotify::Models::Full::Track.new(track)
           end
         end
-
-        response
       end
 
     end

@@ -126,7 +126,22 @@ module Spotify
       # @return [Hash] the parsed response.
       #
       def body
-        JSON.parse(response)
+        @response = JSON.parse(response)
+      end
+
+      def define_response(&block)
+        response = body
+
+        # The if statement covers a case for Users requests.
+        if response.class != Spotify::Models::Error
+          if response['error']
+            response = Spotify::Models::Error.default(response['error'])
+          else
+            response = yield
+          end
+        end
+
+        response
       end
 
     end

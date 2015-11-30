@@ -6,6 +6,7 @@ end
 require "spotify/models/album"
 require "spotify/models/artist"
 require "spotify/models/copyright"
+require "spotify/models/error"
 require "spotify/models/external_id"
 require "spotify/models/external_url"
 require "spotify/models/follower"

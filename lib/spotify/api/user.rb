@@ -36,13 +36,9 @@ module Spotify
       def search_by_id(args = {})
         get(USERS_URL + '/' + args[:id].to_s)
 
-        response = body
-
-        unless response["error"]
-          response = Spotify::Models::Simplified::User.new(response)
+        define_response do
+          Spotify::Models::Simplified::User.new(response)
         end
-
-        response
       end
 
       #
@@ -51,9 +47,9 @@ module Spotify
       # @return [Hash] the parsed response.
       #
       def body
-        JSON.parse(response)
+        @response = JSON.parse(response)
       rescue
-        { 'error' => Spotify::API::Errors::PARSER_ERROR }
+        Spotify::Models::Error.parser_error
       end
 
     end

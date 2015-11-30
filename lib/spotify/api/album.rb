@@ -93,14 +93,11 @@ module Spotify
 
         get(SEARCH_URL, args)
 
-        response = body
+        define_response do
+          klass = Spotify::Models::Simplified::Album
 
-        unless response["error"]
-          klass    = Spotify::Models::Simplified::Album
-          response = Spotify::Models::Paging.new(response["albums"], klass)
+          Spotify::Models::Paging.new(response["albums"], klass)
         end
-
-        response
       end
 
       #
@@ -116,13 +113,9 @@ module Spotify
 
         get(url)
 
-        response = body
-
-        unless response["error"]
-          response = Spotify::Models::Full::Album.new(response)
+        define_response do
+          Spotify::Models::Full::Album.new(response)
         end
-
-        response
       end
 
       #
@@ -137,15 +130,11 @@ module Spotify
       def search_by_ids(args = {})
         get(ALBUMS_URL, args)
 
-        response = body
-
-        unless response["error"]
-          response = response["albums"].map do |album|
+        define_response do
+          response["albums"].map do |album|
             Spotify::Models::Full::Album.new(album)
           end
         end
-
-        response
       end
 
       #
@@ -161,14 +150,11 @@ module Spotify
 
         get(url, params)
 
-        response = body
+        define_response do
+          klass = Spotify::Models::Simplified::Track
 
-        unless response["error"]
-          klass    = Spotify::Models::Simplified::Track
-          response = Spotify::Models::Paging.new(response, klass)
+          Spotify::Models::Paging.new(response, klass)
         end
-
-        response
       end
 
     end

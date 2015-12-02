@@ -1,4 +1,6 @@
 require 'json'
+require 'timeout'
+require 'net/http'
 
 module Spotify
   module API
@@ -86,7 +88,7 @@ module Spotify
         @attempts = attempts
 
         if attempts > MAX_RETRIES || attempts > @retries
-          set_response(Spotify::API::Errors::MAX_RETRIES, true)
+          set_response(Spotify::Models::Error.max_retries, true)
 
         else
           begin
@@ -97,9 +99,11 @@ module Spotify
             end
 
           rescue Timeout::Error
-            set_response(Spotify::API::Errors::TIMEOUT)
-          rescue
-            set_response(Spotify::API::Errors::UNEXPECTED)
+            set_response(Spotify::Models::Error.timeout)
+          rescue Exception => e
+            puts e.message
+            puts e.backtrace
+            set_response(Spotify::Models::Error.unexpected_error)
           end
         end
 

@@ -19,7 +19,7 @@ module Spotify
           status:  700,
           message: "Timed out."
         },
-        unexpected: {
+        unexpected_error: {
           status: 710,
           message: "Unexpected error."
         },

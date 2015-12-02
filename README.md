@@ -7,7 +7,7 @@ This gem was developed with the purpose of retrieve information from [Spotify](h
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'spotify-api'
+gem 'spotify-ruby-api'
 ```
 
 And then execute:
@@ -16,7 +16,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install spotify-api
+    $ gem install spotify-ruby-api
 
 ## Usage
 

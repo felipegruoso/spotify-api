@@ -4,10 +4,12 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'spotify/api/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "spotify-ruby-api"
-  spec.version       = Spotify::API::VERSION
-  spec.authors       = ["Felipe Gadelha Ruoso"]
-  spec.email         = ["felipe.gruoso@gmail.com"]
+  spec.name                  = "spotify-ruby-api"
+  spec.version               = Spotify::API::VERSION
+  spec.authors               = ["Felipe Gadelha Ruoso"]
+  spec.email                 = ["felipe.gruoso@gmail.com"]
+  spec.licenses              = ["MIT"]
+  spec.required_ruby_version = '>= 2.1.4'
 
   spec.summary       = %q{Uses Spotify API in Ruby.}
   spec.homepage      = "https://github.com/felipegruoso/spotify-api"
@@ -27,8 +29,8 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.9"
   spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "rspec", "~> 3.3.0"
 
-  spec.add_runtime_dependency "activesupport"
-  spec.add_runtime_dependency "json"
+  spec.add_runtime_dependency "activesupport", "~> 4.2.4"
+  spec.add_runtime_dependency "json", "~> 1.8.3"
 end

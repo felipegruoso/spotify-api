@@ -1,4 +1,4 @@
-# Spotify::API
+# spotify-ruby-api
 
 This gem was developed with the purpose of retrieve information from [Spotify](https://spotify.com/) service by using its API.
 
@@ -20,9 +20,10 @@ Or install it yourself as:
 
 ## Usage
 
-require 'spotify'
+    require 'spotify'
 
 ### Albums
+```ruby
 albums_api = Spotify::API::Albums
 
 albums_api.search_by_id(id: '')    # => Spotify::Models::Full::Album
@@ -30,14 +31,18 @@ albums_api.search_by_ids(ids: [])  # => [Spotify::Models::Full::Album]
 
 tracks = albums_api.tracks(id: '') # => Spotify::Models::Paging
 tracks.items                       # => [Spotify::Models::Simplified::Track]
+```
 
 ### Tracks
+```ruby
 tracks_api = Spotify::API::Track
 
 tracks_api.search_by_id(id: '')   # => Spotify::Models::Full::Track
 tracks_api.search_by_ids(ids: '') # => [Spotify::Models::Full::Track]
+```
 
 ### Artists
+```ruby
 artists_api = Spotify::API::Artist
 
 artists_api.search_by_id(id: '')   # => Spotify::Models::Full::Artist
@@ -51,12 +56,14 @@ top_tracks.items                            # => Spotify::Models::Full::Track
 
 related_artists = artists_api.related_artists(id: '') # => Spotify::Models::Paging
 related_artists.items                                 # => [Spotify::Models::Full::Artist]
+```
 
 ## Todo
 
 The following table shows all API endpoints and if each one is already implemented or not.
 
 | Method | EndPoints                                                      | Implemented? |
+|--------|----------------------------------------------------------------|--------------|
 | GET    | /v1/albums/{id}                                                | YES          |
 | GET    | /v1/albums?ids={ids}                                           | YES          |
 | GET    | /v1/albums/{id}/tracks                                         | YES          |
